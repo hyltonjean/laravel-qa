@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Question;
-use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
@@ -14,7 +13,7 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::latest()->paginate(5);
+        $questions = Question::with('user')->latest()->paginate(5);
 
         return view('questions.index', compact('questions'));
     }
@@ -26,7 +25,9 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        //
+        $question = new Question();
+
+        return view('questions.create', compact('question'));
     }
 
     /**
@@ -35,9 +36,18 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        request()->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ]);
+
+        request()->user()->questions()->create(request()->only('title', 'body'));
+
+        session()->flash('success', 'Your question has been submitted.');
+
+        return redirect(route('questions.index'));
     }
 
     /**
@@ -48,7 +58,7 @@ class QuestionsController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return view('questions.show', compact('question'));
     }
 
     /**
