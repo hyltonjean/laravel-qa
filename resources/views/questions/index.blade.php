@@ -16,6 +16,8 @@
                 </div>
 
                 <div class="card-body">
+                    @include('partials.messages')
+
                     @foreach ($questions as $question)
                     <div class="media">
                         <div class="d-flex flex-column counters">
@@ -27,13 +29,30 @@
                                 {{ Str::plural('answer', $question->answers) }}
                             </div>
                             <div class="view">
-                                {{ $question->views . " " . Str::plural('answer', $question->views) }}
+                                {{ $question->views . " " . Str::plural('view', $question->views) }}
                             </div>
                         </div>
                         <div class="media-body">
-                            <h3 class="mt-0">
-                                <a href="{{ $question->url }}">{{ $question->title }}</a>
-                            </h3>
+                            <div class="d-flex align-items-center">
+                                <h3 class="mt-0">
+                                    <a href="{{ $question->url }}">{{ $question->title }}</a>
+                                </h3>
+                                <div class="ml-auto">
+                                    @if (auth()->user()->can('update-question', $question))
+                                    <a href="{{ route('questions.edit', $question->id) }}"
+                                        class="hover btn btn-sm btn-outline-info">Edit</a>
+                                    @endif
+                                    @if (auth()->user()->can('delete-question', $question))
+                                    <form class="form-delete" action="{{ route('questions.destroy', $question->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </div>
                             <p class="lead">Asked by
                                 <a href="{{ $question->user->url }}">{{ $question->user->name }}</a>
                                 <small class="text-muted">{{ $question->created_date }}</small>

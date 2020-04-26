@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
 {
@@ -36,14 +38,9 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(AskQuestionRequest $request)
     {
-        request()->validate([
-            'title' => 'required|max:255',
-            'body' => 'required',
-        ]);
-
-        request()->user()->questions()->create(request()->only('title', 'body'));
+        $request->user()->questions()->create($request->only('title', 'body'));
 
         session()->flash('success', 'Your question has been submitted.');
 
@@ -58,6 +55,8 @@ class QuestionsController extends Controller
      */
     public function show(Question $question)
     {
+        $question->increment('views');
+
         return view('questions.show', compact('question'));
     }
 
@@ -69,7 +68,11 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        if (Gate::denies('update-question', $question)) {
+            abort(403, 'Access denied.');
+        }
+
+        return view('questions.edit', compact('question'));
     }
 
     /**
@@ -79,9 +82,13 @@ class QuestionsController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(AskQuestionRequest $request, Question $question)
     {
-        //
+        $question = $question->update($request->only('title', 'body'));
+
+        session()->flash('success', 'Question has been updated.');
+
+        return redirect(route('questions.index'));
     }
 
     /**
@@ -92,6 +99,14 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        if (Gate::denies('delete-question', $question)) {
+            abort(403, 'Access denied.');
+        }
+
+        $question = $question->delete();
+
+        session()->flash('success', 'Question has been deleted.');
+
+        return redirect(route('questions.index'));
     }
 }

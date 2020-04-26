@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use League\CommonMark\CommonMarkConverter;
 
 class Question extends Model
 {
@@ -33,11 +34,6 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function getStatusAttribute()
     {
         if ($this->answers > 0) {
@@ -47,5 +43,11 @@ class Question extends Model
             return 'answered';
         }
         return 'unanswered';
+    }
+
+    public function getBodyHtmlAttribute()
+    {
+
+        return (new CommonMarkConverter())->convertToHtml($this->body);
     }
 }

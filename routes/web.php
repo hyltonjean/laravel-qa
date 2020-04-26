@@ -9,4 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('questions', 'QuestionsController');
+Route::resource('questions', 'QuestionsController')->except('show');
+
+Route::get('/questions/{slug}', 'QuestionsController@show')->name('questions.show');
