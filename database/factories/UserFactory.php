@@ -34,7 +34,7 @@ $factory->define(Question::class, function (Faker $faker) {
         'title' => rtrim($faker->sentence(mt_rand(5, 10)), '.'),
         'body' => $faker->paragraph(mt_rand(3, 7), true),
         'views' => mt_rand(0, 10),
-        'answers_count' => mt_rand(0, 10),
+        // 'answers_count' => mt_rand(0, 10),
         'votes' => mt_rand(-3, 10),
     ];
 });

@@ -53,7 +53,6 @@ class Question extends Model
 
     public function getBodyHtmlAttribute()
     {
-
         return (new CommonMarkConverter())->convertToHtml($this->body);
     }
 }
