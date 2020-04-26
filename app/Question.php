@@ -3,6 +3,7 @@
 namespace App;
 
 use App\User;
+use App\Answer;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use League\CommonMark\CommonMarkConverter;
@@ -10,12 +11,17 @@ use League\CommonMark\CommonMarkConverter;
 class Question extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'body',
+        'title', 'body',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
     }
 
     public function setTitleAttribute($val)
@@ -36,7 +42,7 @@ class Question extends Model
 
     public function getStatusAttribute()
     {
-        if ($this->answers > 0) {
+        if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
                 return 'answered-accepted';
             }
