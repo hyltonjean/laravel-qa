@@ -22,13 +22,29 @@
                             <span class="votes_count">1230</span>
                             <a title="This question is not useful" class="vote-down off"><i
                                     class="fa fa-caret-down fa-4x"></i></a>
-                            <a title="Click to mark as favorite question (Click again to undo)"
-                                class="favorite mt-1 favorited"><svg aria-hidden="true" class="svg-icon iconStar"
-                                    width="18" height="18" viewBox="0 0 18 18" fill="#bbc0c4">
+                            <a title="Click to mark as favorite question (Click again to undo)" class="favorite mt-1
+                                {{ Auth::guest() ? 'off' : ($question->is_favorited ? 'favorited' : '') }}"
+                                onclick="event.preventDefault(); document.getElementById('favorite-question-{{ $question->id }}').submit()">
+                                <svg aria-hidden="true" class="svg-icon iconStar" width="25" height="25"
+                                    viewBox="0 0 18 18"
+                                    fill="{{ Auth::guest() ? '#6c757d' : ($question->is_favorited ? '#f6993f' : '#6c757d') }}">
                                     <path
                                         d="M9 12.65l-5.29 3.63 1.82-6.15L.44 6.22l6.42-.17L9 0l2.14 6.05 6.42.17-5.1 3.9 1.83 6.16L9 12.65z">
                                     </path>
-                                </svg><span class="favorites-count">123</span></a>
+                                </svg>
+                                <span class="favorites-count mt-1"
+                                    style="{{ $question->is_favorited ? 'color: #f6993f;' : 'color: #6c757d;' }}">
+                                    <h6>{{ $question->favorites_count }}</h6>
+                                </span>
+                                <form id="favorite-question-{{ $question->id }}"
+                                    action="/questions/{{ $question->id }}/favorites" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                    @if ($question->is_favorited)
+                                    @method('DELETE')
+                                    @endif
+                                </form>
+                            </a>
                         </div>
                         <div class="media-body">
                             {!! $question->body_html !!}

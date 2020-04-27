@@ -59,7 +59,7 @@ form.form-delete {
             font-size: 25px;
         }
         &.favorites-count {
-            font-size: 12px;
+            font-size: 14px;
         }
     }
 
@@ -69,13 +69,7 @@ form.form-delete {
 
         &.off,
         &.off:hover {
-            color: #bbc0c4;
-        }
-        &.favorite {
-            &.favorited,
-            &.favorited:hover {
-                color: #bbc0c4;
-            }
+            color: $gray-500;
         }
         &.vote-accepted {
             color: $green;

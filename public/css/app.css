@@ -10942,7 +10942,7 @@ form.form-delete {
 }
 
 .vote-controls span.favorites-count {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .vote-controls a {
@@ -10952,12 +10952,7 @@ form.form-delete {
 
 .vote-controls a.off,
 .vote-controls a.off:hover {
-  color: #bbc0c4;
-}
-
-.vote-controls a.favorite.favorited,
-.vote-controls a.favorite.favorited:hover {
-  color: #bbc0c4;
+  color: #adb5bd;
 }
 
 .vote-controls a.vote-accepted {

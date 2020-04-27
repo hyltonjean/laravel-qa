@@ -43,6 +43,21 @@ class User extends Authenticatable
         return $this->hasMany(Question::class);
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps(); // 'user_id', 'question_id'
+    }
+
+    public function voteQuestions()
+    {
+        return $this->morphedByMany(Question::class, 'votable');
+    }
+
+    public function voteAnswers()
+    {
+        return $this->morphedByMany(Answer::class, 'votable');
+    }
+
     public function getAvatarAttribute()
     {
         $email = $this->email;

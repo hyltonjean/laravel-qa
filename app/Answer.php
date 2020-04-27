@@ -21,6 +21,11 @@ class Answer extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function votes()
+    {
+        return $this->morphedByMany(User::class, 'votable');
+    }
+
     public function getBodyHtmlAttribute()
     {
         return (new CommonMarkConverter())->convertToHtml($this->body);
