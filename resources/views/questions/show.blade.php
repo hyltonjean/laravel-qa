@@ -32,7 +32,7 @@
                         </div>
                         <div class="media-body">
                             {!! $question->body_html !!}
-                            <div class="d-flex flex-column align-items-end">
+                            <div class="float-right">
                                 <span class="text-muted">Asked {{ $question->created_date }}</span>
                                 <div class="media mt-2">
                                     <a href="{{ $question->user->url }}" class="pr-2">
@@ -49,50 +49,13 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h2>{{ $question->answers_count . " " . Str::plural('Answer', $question->answers_count) }}</h2>
-                    </div>
-                    <hr>
-                    @foreach ($question->answers as $answer)
 
-                    <div class="media">
-                        <div class="d-flex flex-column vote-controls">
-                            <a title="This answer is useful" class="vote-up"><i class="fa fa-caret-up fa-4x"></i></a>
-                            <span class="votes_count">1230</span>
-                            <a title="This answer is not useful" class="vote-down off"><i
-                                    class="fa fa-caret-down fa-4x"></i></a>
-                            <a title="Mark this answer as best answer" class="vote-accepted"><svg aria-hidden="true"
-                                    class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"
-                                    fill="#48a868">
-                                    <path d="M6 14l8 8L30 6v8L14 30l-8-8v-8z"></path>
-                                </svg></a>
-                        </div>
-                        <div class="media-body mr-3">
-                            {!! $answer->body_html !!}
-                        </div>
-                        <div class="d-flex flex-column align-items-end">
-                            <span class="text-muted">Answered {{ $answer->created_date }}</span>
-                            <div class="media mt-2">
-                                <a href="{{ $answer->user->url }}" class="pr-2">
-                                    <img class="rounded-circle" src="{{ $answer->user->avatar }}">
-                                </a>
-                                <div class="media-body mt-1">
-                                    <a href="{{ $answer->user->url }}">{{ $answer->user->name }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if (!$loop->last)
-                    <hr>
-                    @endif
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('answers.index', [
+    'answers' => $question->answers,
+    'questionCount' => $question->answers_count
+    ])
+
+    @include('answers.create')
+
 </div>
 @endsection
