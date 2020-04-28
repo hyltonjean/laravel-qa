@@ -11,7 +11,7 @@ use League\CommonMark\CommonMarkConverter;
 class Question extends Model
 {
     protected $fillable = [
-        'title', 'body',
+        'title', 'body'
     ];
 
     public function user()
@@ -31,7 +31,7 @@ class Question extends Model
 
     public function votes()
     {
-        return $this->morphedByMany(User::class, 'votable');
+        return $this->morphToMany(User::class, 'votable');
     }
 
     public function setTitleAttribute($val)
@@ -85,5 +85,15 @@ class Question extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    public function downVotes()
+    {
+        return $this->votes()->wherePivot('vote', -1);
+    }
+
+    public function upVotes()
+    {
+        return $this->votes()->wherePivot('vote', 1);
     }
 }

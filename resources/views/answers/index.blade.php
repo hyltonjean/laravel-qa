@@ -11,10 +11,25 @@
                 @foreach ($answers as $answer)
                 <div class="media">
                     <div class="d-flex flex-column vote-controls">
-                        <a title="This answer is useful" class="vote-up"><i class="fa fa-caret-up fa-4x"></i></a>
-                        <span class="votes_count">1230</span>
-                        <a title="This answer is not useful" class="vote-down off"><i
-                                class="fa fa-caret-down fa-4x"></i></a>
+                        <a title="This answer is useful" class="vote-up {{ Auth::guest() ? 'off' : '' }}"
+                            onclick="event.preventDefault(); document.getElementById('up-vote-answer-{{ $answer->id }}').submit()">
+                            <i class="fa fa-caret-up fa-4x"></i>
+                        </a>
+                        <form id="up-vote-answer-{{ $answer->id }}" action="/answers/{{ $answer->id }}/vote"
+                            method="POST" style="display: none;">
+                            @csrf <input type="hidden" name="vote" value="1">
+                        </form>
+
+                        <span class="votes_count">{{ $answer->votes_count }}</span>
+
+                        <a title="This answer is not useful" class="vote-down {{ Auth::guest() ? 'off' : '' }}"
+                            onclick="event.preventDefault(); document.getElementById('down-vote-answer-{{ $answer->id }}').submit()">
+                            <i class="fa fa-caret-down fa-4x"></i>
+                        </a>
+                        <form id="down-vote-answer-{{ $answer->id }}" action="/answers/{{ $answer->id }}/vote"
+                            method="POST" style="display: none;">
+                            @csrf <input type="hidden" name="vote" value="-1">
+                        </form>
                         @can('accept', $answer)
                         <a title="Mark this answer as best answer" class="vote-accepted"
                             onclick="event.preventDefault(); document.getElementById('accept-answer-{{ $answer->id }}').submit()">

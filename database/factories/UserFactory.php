@@ -35,7 +35,7 @@ $factory->define(Question::class, function (Faker $faker) {
         'body' => $faker->paragraph(mt_rand(3, 7), true),
         'views' => mt_rand(0, 10),
         // 'answers_count' => mt_rand(0, 10),
-        'votes_count' => mt_rand(-3, 10),
+        // 'votes_count' => mt_rand(-3, 10),
     ];
 });
 
@@ -43,6 +43,6 @@ $factory->define(Answer::class, function (Faker $faker) {
     return [
         'body' => $faker->paragraph(mt_rand(3, 7)),
         'user_id' => User::pluck('id')->random(),
-        'votes_count' => mt_rand(0, 5),
+        // 'votes_count' => mt_rand(0, 5),
     ];
 });
