@@ -4,6 +4,7 @@ namespace App;
 
 use App\User;
 use App\Question;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 use League\CommonMark\CommonMarkConverter;
 
@@ -25,7 +26,7 @@ class Answer extends Model
 
     public function getBodyHtmlAttribute()
     {
-        return (new CommonMarkConverter())->convertToHtml($this->body);
+        return Purifier::clean((new CommonMarkConverter())->convertToHtml($this->body));
     }
 
     public function getCreatedDateAttribute()

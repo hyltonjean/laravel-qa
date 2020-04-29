@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Answer;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Database\Eloquent\Model;
 use League\CommonMark\CommonMarkConverter;
 
@@ -23,7 +24,7 @@ class Question extends Model
 
     public function answers()
     {
-        return $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class)->orderBy('votes_count', 'DESC');
     }
 
     public function favorites()
@@ -60,7 +61,7 @@ class Question extends Model
 
     public function getBodyHtmlAttribute()
     {
-        return (new CommonMarkConverter())->convertToHtml($this->body);
+        return Purifier::clean($this->bodyHtml());
     }
 
     public function acceptBestAnswer(Answer $answer)
@@ -82,5 +83,20 @@ class Question extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    public function getExcerptAttribute()
+    {
+        return $this->excerpt(250);
+    }
+
+    private function bodyHtml()
+    {
+        return (new CommonMarkConverter())->convertToHtml($this->body);
+    }
+
+    public function excerpt($length)
+    {
+        return Str::limit(strip_tags($this->bodyHtml()), $length);
     }
 }
