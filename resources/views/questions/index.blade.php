@@ -7,9 +7,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h2>All Questions</h2>
+                        <h1 class="text-secondary">All Questions</h1>
                         <div class="ml-auto">
-                            <a href="{{ route('questions.create') }}" class="btn btn-outline-secondary">Ask
+                            <a href="{{ route('questions.create') }}" class="btn btn-outline-primary">Ask
                                 Question</a>
                         </div>
                     </div>
@@ -36,7 +36,8 @@
                         <div class="media-body">
                             <div class="d-flex align-items-center">
                                 <h3 class="mt-0">
-                                    <a href="{{ $question->url }}">{{ $question->title }}</a>
+                                    <a class="text-secondary text-decoration-none"
+                                        href="{{ $question->url }}">{{ $question->title }}</a>
                                 </h3>
                                 <div class="ml-auto">
                                     @can('update', $question)
@@ -55,7 +56,8 @@
                                 </div>
                             </div>
                             <p class="lead">Asked by
-                                <a href="{{ $question->user->url }}">{{ $question->user->name }}</a>
+                                <a class="text-secondary text-decoration-none"
+                                    href="{{ $question->user->url }}">{{ $question->user->name }}</a>
                                 <small class="text-muted">{{ $question->created_date }}</small>
                             </p>
 

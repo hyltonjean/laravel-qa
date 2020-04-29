@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
-                    <h2>{{ $questionCount . " " . Str::plural('Answer', $questionCount) }}</h2>
+                    <h2 class="text-secondary">{{ $questionCount . " " . Str::plural('Answer', $questionCount) }}</h2>
                 </div>
                 @include('partials.messages')
 
@@ -36,7 +36,7 @@
                         ])
                     </div>
                     <div class="media-body mr-3">
-                        {!! $answer->body_html !!}
+                        <div class="mb-5">{!! $answer->body_html !!}</div>
                         <div class="row">
                             <div class="col-4">
                                 <div class="ml-auto">
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="col-4"></div>
-                            <div class="col-4">
+                            <div class="col-4 d-flex flex-column align-items-end">
                                 @include('shared.author', [
                                 'model' => $answer,
                                 'label' => 'answered'
